@@ -48,7 +48,7 @@ const values={campaignName,date,budget,location,platform}
   };
 
   useEffect(() => {
-    fetch('https://node-aper.herokuapp.com/getCampaigns')
+    fetch('https://mongo-app.onrender.com/getCampaigns')
       .then((res) => res.json())
       .then((data) => {
         setCampaigns(data.campaigns)
