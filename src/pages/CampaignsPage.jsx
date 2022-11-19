@@ -48,7 +48,7 @@ const values={campaignName,date,budget,location,platform}
   };
 
   useEffect(() => {
-    fetch('http://localhost:8000/getCampaigns')
+    fetch('https://node-aper.herokuapp.com/getCampaigns')
       .then((res) => res.json())
       .then((data) => {
         setCampaigns(data.campaigns)

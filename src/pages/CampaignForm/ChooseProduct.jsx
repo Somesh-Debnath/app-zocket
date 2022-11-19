@@ -24,7 +24,7 @@ function ChooseProducts({step,nextStep,prevStep,values,
     }
  
   useEffect(() => {
-    axios.get('http://localhost:8000/getProducts').then((res) => {
+    axios.get('https://node-aper.herokuapp.com/getProducts').then((res) => {
       setProducts(res.data.products)
     })
   }, [])
