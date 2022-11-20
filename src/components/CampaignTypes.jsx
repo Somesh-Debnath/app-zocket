@@ -1,13 +1,14 @@
-import React,{useState} from 'react'
+import React,{useState,useContext} from 'react'
+import {CampaignContext } from '../Contexts/CampaignContext'
 
-function CampaignTypes({Platform,title,description,icon,parentCallback}) {
+function CampaignTypes({Platform,title,description,icon}) {
  const [selected,setSelected] = useState(false)
-  const [platform,setPlatform] = useState("")
-  const active = selected ? "active" : ""
-  const handleChange = () => {
+ const {setPlatform} = useContext(CampaignContext)
+
+  const handleChange = (e) => {
     setSelected(!selected)
     setPlatform(Platform)
-    parentCallback(platform)    
+    console.log(e.currentTarget)       
   }
   //console.log(platform)
   return (
@@ -19,7 +20,7 @@ function CampaignTypes({Platform,title,description,icon,parentCallback}) {
         <div className='flex space-x-3'>
             <img src={icon} alt='icon' className='w-5 mt-2 h-5'/>
             
-            <div className='flex flex-col font-sans font-Eudoxus'>
+            <div className='flex flex-col font-Eudoxus'>
                 <h1 className='text-gray-800 text-lg font-semibold'>{title}</h1>
                 <span className='text-xs text-gray-400'>{description}</span>
             </div>

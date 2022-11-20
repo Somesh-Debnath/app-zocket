@@ -1,17 +1,18 @@
-import React from 'react'
-
-function ProductCard({name,img,price,parentCallback}) {
+import React,{useContext} from 'react'
+import {CampaignContext} from '../Contexts/CampaignContext'
+function ProductCard({names,img,price}) {
   const [selected, setSelected] = React.useState(false)
-  const [image, setImage] = React.useState(null);
-  const [names, setNames] = React.useState("");
-  const handleChange = () => {
+  const {image,setImage,name,setName,campaignName,setCampaignName}=useContext(CampaignContext)
+  
+  const handleChange = (e) => {
     setSelected(!selected)
     setImage(img)
-    setNames(name)
-    parentCallback({img,name})
+    setName(names)
+    setCampaignName(names+" Campaign")
+    console.log(e.currentTarget)
   }
   // console.log(image)
-  // console.log(names)
+   //console.log(names)
   return (
     <div onClick={handleChange}
     className='flex border-[1px] border-gray-300 
@@ -30,7 +31,7 @@ function ProductCard({name,img,price,parentCallback}) {
       </div>
      
         <div className='flex flex-col '>
-          <h3 className='text-gray-800 font-sans font-semibold'>{name}</h3>
+          <h3 className='text-gray-800 font-sans font-semibold'>{names}</h3>
           <span className='text-xs font-sans font-semibold
            text-[#A5A5A5]'>Rs: {price}</span>
         </div>

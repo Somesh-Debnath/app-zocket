@@ -1,20 +1,53 @@
-import React from 'react'
+import React,{useContext} from 'react'
 import CakeShopReview from '../../components/CakeShopReview'
-
+import { CampaignContext } from '../../Contexts/CampaignContext';
 import Navbar from '../../components/Navbar';
 import Sidebar from '../../components/Sidebar';
+import FileBase64 from 'react-file-base64';
 import cake1 from '../../image/cake1.png'
 import cake2 from '../../image/cake2.png'
 import cake3 from '../../image/cake3.png'
 import cake4 from '../../image/cake4.png'
+import axios from 'axios';
 
+function ReadyToGo() {
+  const {platform,location,image,startdate,enddate,campaignName,step,setStep}=useContext(CampaignContext)
+ 
+ console.log(platform,location,image,startdate,enddate,campaignName)
+    const postURL='https://mongo-app.onrender.com/createCampaign'
+    const data=new FormData()
+      data.append('platform',platform)
+      data.append('location',location)
+      data.append('image',image)
+      data.append('startdate',startdate)
+      data.append('enddate',enddate)
+      data.append('campaignName',campaignName)
+      
+      const config={
+         headers:{
+          Accept:'application/json',
+          'Content-Type':'multipart/form-data'
+         },
+         body:JSON.stringify(data)
+      }
+    const handleSubmit=()=>{
+      setStep(0)
+      axios.post(postURL,data,config)
+      .then(res=>{
+        console.log(res)
+      })
+      .catch(err=>{
+        console.log(err)
+      })
+    }
 
-function ReadyToGo({step,nextStep,prevStep}) {
   return (
+
+
     <div className="flex relative flex-col ">
           <Navbar/>   
         <Sidebar/>
-
+   
         <div className='absolute top-[5.2rem] left-[7.25rem]' >
           <h1 className="font-bold text-2xl font-Eudoxus my-[-3px]">Your Ad Campaign</h1>
           <span className='text-sm font-Eudoxus text-gray-500'>
@@ -38,15 +71,14 @@ function ReadyToGo({step,nextStep,prevStep}) {
        </div>
 
        <div className='flex justify-end mx-20 mt-10 mb-32'>
-        <button onClick={prevStep}
+        <button 
+        onClick={()=>handleSubmit()}
         className='bg-[#0F6EFF] font-medium flex text-lg
         px-24 py-3 rounded-xl text-white font-Eudoxus'>
           Start Campaign</button>
       </div>
-        
-
-
     </div>
+ 
   )
 }
 

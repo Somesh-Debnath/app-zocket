@@ -1,25 +1,20 @@
 import React from 'react'
-import {DatePicker} from "react-datepicker";
+import { CampaignContext } from '../../Contexts/CampaignContext';
 import Navbar from '../../components/Navbar';
 import Sidebar from '../../components/Sidebar';
 import ToggleBlue from '../../components/ToggleBlue';
 import Slider from '@mui/material/Slider';
 
-function CampaignSettings({step,nextStep,prevStep}) {
+function CampaignSettings() {
   const [toggled, setToggled] = React.useState(false);
-  const [startdate, setstartDate] = React.useState(new Date());
-  const [enddate, setenddate] = React.useState(new Date());
-  const [Location, setLocation] = React.useState("");
-
-  console.log(startdate)
-  console.log(enddate)
-  console.log(Location)
   
+  const {step,setStep,startdate,setstartDate,enddate,
+    setendDate,location,setLocation,platform}=React.useContext(CampaignContext)
+
     const handleClick = () => {
         setToggled((s) => !s);
     };
-
-
+    console.log(location,platform)
 
     const marks = [
       {
@@ -47,7 +42,6 @@ function CampaignSettings({step,nextStep,prevStep}) {
     function valuetext(value) {
       return `${value}km`;
     }
-
 
   return (
     <div className="flex relative flex-col  ">
@@ -119,7 +113,7 @@ function CampaignSettings({step,nextStep,prevStep}) {
                   <input 
                   className='bg-white w-1/2 p-4
                   border-[1px] rounded-lg border-gray-400'
-                  type='date' onChange={e=>setenddate(e.target.value)}
+                  type='date' onChange={e=>setendDate(e.target.value)}
                   />
                 
         </div>
@@ -241,7 +235,7 @@ function CampaignSettings({step,nextStep,prevStep}) {
     </div>
       
 
-       <div onClick={nextStep}
+       <div onClick={()=>setStep(step+1)}
         className='flex justify-end mx-20 mt-[-74px] mb-20'>
         <button className='bg-[#0F6EFF] font-medium flex text-lg
         px-24 py-3 rounded-lg text-white font-Eudoxus'>

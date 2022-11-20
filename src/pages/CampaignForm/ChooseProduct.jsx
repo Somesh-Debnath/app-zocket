@@ -1,38 +1,20 @@
-import React, { useEffect } from 'react'
+import React, { useEffect,useContext } from 'react'
 import Navbar from '../../components/Navbar';
 import Sidebar from '../../components/Sidebar';
 import axios from 'axios'
+import { CampaignContext } from '../../Contexts/CampaignContext';
 import ProductCard from '../../components/ProductCard';
-function ChooseProducts({step,nextStep,prevStep,values,
-  parentCallback,handleChange}) {
+function ChooseProducts() {
 
   const [products, setProducts] = React.useState([])
-  const [img, setImg] = React.useState()
-  const [campaignName, setcampaignName] = React.useState("")
+  const {step,setStep}=useContext(CampaignContext)
 
-  const handleCallback=(childData)=>{
-    setcampaignName(childData.name)
-    setImg(childData.img)
-  }
-
- handleChange({campaignName})
-  values.campaignName=campaignName
-  
-   const continu=(e)=>{
-        e.preventDefault();
-        nextStep();
-    }
- 
   useEffect(() => {
     axios.get('https://mongo-app.onrender.com/getProducts').then((res) => {
       setProducts(res.data.products)
     })
   }, [])
 
-  //console.log(products.length)
-
-  //const handleChange
-        
         return (
     <div className="flex relative flex-col ">
           <Navbar/>   
@@ -51,7 +33,7 @@ function ChooseProducts({step,nextStep,prevStep,values,
           <h1 className="font-bold text-lg font-Eudoxus 
           my-[-3px]">Choose the product</h1>
           <span className='text-sm font-Eudoxus text-gray-500 mt-[2px]'>
-           (Step 2 of 4)</span>
+           (Step {step} of 4)</span>
         </div>
       <div className='flex font-Eudoxus flex-wrap mt-3'>
         
@@ -61,9 +43,9 @@ function ChooseProducts({step,nextStep,prevStep,values,
               (product.image.data.data))
           );
           return <ProductCard 
-          key={i} parentCallback={handleCallback}
+          key={i}
           img={`data:image/png;base64,${base64String}`}
-          name={product.name} price={product.price}/>
+          names={product.name} price={product.price}/>
            })}
        
         </div>
@@ -72,7 +54,7 @@ function ChooseProducts({step,nextStep,prevStep,values,
           
        
 
-       <div onClick={continu}
+       <div onClick={()=>setStep(step+1)}
        className='flex justify-end mx-20 mt-10 mb-32'>
         <button className='bg-[#0F6EFF] font-medium flex text-lg
         px-24 py-3 rounded-xl text-white font-Eudoxus'>

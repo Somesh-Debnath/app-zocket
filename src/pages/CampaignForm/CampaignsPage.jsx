@@ -1,63 +1,25 @@
-import React, { useEffect } from 'react'
-import Navbar from '../components/Navbar'
-import Sidebar from '../components/Sidebar'
-
-import CreateCampaign from './CampaignForm/CreateCampaign'
-import ReadyToGo from './CampaignForm/ReadyToGo'
-import CampaignSettings from './CampaignForm/CampaignSettings'
-import ChooseProducts from './CampaignForm/ChooseProduct'
-import CampaignCard from '../components/CampaignCard'
+import React, { useEffect,useContext } from 'react'
+import Navbar from '../../components/Navbar';
+import CampaignCard from '../../components/CampaignCard';
+import Sidebar from '../../components/Sidebar';
+import {CampaignContext} from '../../Contexts/CampaignContext';
 
 function CampaignsPage() {
-  const [step, setStep] = React.useState(0);
-  const [image, setImage] = React.useState(null);
-  const [campaignName, setCampaignName] = React.useState("");
-  const [date, setDate] = React.useState([]);
-  const [budget, setBudget] = React.useState();
-  const [location, setLocation] = React.useState("");
-  const [platform, setPlatform] = React.useState();
+    const {campaigns,setCampaigns,step,setStep}=useContext(CampaignContext);
+ 
 
-  const [campaigns, setCampaigns] = React.useState([])
+    useEffect(() => {
+        fetch('https://mongo-app.onrender.com/getCampaigns')
+          .then((res) => res.json())
+          .then((data) => {
+            setCampaigns(data.campaigns)
+          })
+          return () => {
+            setCampaigns([])
+          }
+      }, [setCampaigns])
 
-const handleChange=input=>e=>{
-  if(input==="campaignName"){
-    setCampaignName(e.target.value)
-  }
-  if(input==="location"){
-    setLocation(e.target.value)
-  }
-  if(input==="platform"){
-    setPlatform(e.target.value)
-  }
-  if(input==="budget"){
-    setBudget(e.target.value)
-  }
-}
-
-console.log(campaignName)
-console.log(location)
-  
-const values={campaignName,date,budget,location,platform}
-
-  const nextStep = () => {
-    setStep(step + 1);
-  };
-
-  const prevStep = () => {
-    setStep(step - 4);
-  };
-
-  useEffect(() => {
-    fetch('https://mongo-app.onrender.com/getCampaigns')
-      .then((res) => res.json())
-      .then((data) => {
-        setCampaigns(data.campaigns)
-      })
-  }, [])
-console.log(campaigns)
-  switch (step) {
-    case 0:
-      return (
+    return (
         <div className="flex relative flex-col ">
               <Navbar/>   
             <Sidebar/>
@@ -67,7 +29,7 @@ console.log(campaigns)
               <span className='text-sm font-Eudoxus text-gray-500'>Check the list of campaigns you created</span>
             </div>
           <div className='flex justify-end mx-14 mt-14'>
-            <button onClick={nextStep}
+            <button onClick={()=>setStep(step+1)}
              className='bg-[#0F6EFF] font-medium flex 
             px-5 py-3 rounded-xl text-white font-Eudoxus'>
              <svg className="mx-2 mt-[1.4px]" width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -166,47 +128,6 @@ console.log(campaigns)
           </div>
         </div>
       )
-    case 1:
-      return (
-        <CreateCampaign 
-        step={step}
-        nextStep={nextStep}
-        prevStep={prevStep}
-        handleChange={handleChange}
-        values={values}
-        />
-      )
-    case 2:
-      return (
-        <ChooseProducts
-        step={step}
-        nextStep={nextStep}
-        prevStep={prevStep}
-        handleChange={handleChange}
-        values={values}        
-        />
-      )
-    case 3:
-      return (
-        <CampaignSettings
-        step={step}
-        nextStep={nextStep}
-        prevStep={prevStep}
-        
-        />
-      )
-    case 4:
-      return (
-        <ReadyToGo
-        step={step}
-        nextStep={nextStep}
-        prevStep={prevStep}
-        
-        />
-      )  
-      default:   
-          console.log('This is a multi-step form built with React.')
-   }
 }
 
 export default CampaignsPage
