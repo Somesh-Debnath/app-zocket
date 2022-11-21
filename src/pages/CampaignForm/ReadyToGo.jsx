@@ -3,7 +3,6 @@ import CakeShopReview from '../../components/CakeShopReview'
 import { CampaignContext } from '../../Contexts/CampaignContext';
 import Navbar from '../../components/Navbar';
 import Sidebar from '../../components/Sidebar';
-import FileBase64 from 'react-file-base64';
 import cake1 from '../../image/cake1.png'
 import cake2 from '../../image/cake2.png'
 import cake3 from '../../image/cake3.png'
